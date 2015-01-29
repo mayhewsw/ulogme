@@ -1,5 +1,5 @@
 body {
-  font-family: Impact, Charcoal, sans-serif;
+  font-family: Helvetica, Charcoal, sans-serif;
   color: #333;
   font-size: 20px;
   margin: 0;
@@ -186,11 +186,11 @@ pre {
   height: 40px;
 }
 #piechart text {
-  font-family: Impact, Charcoal, sans-serif;
+  font-family: Charcoal, sans-serif;
   font-size: 20px;
 }
 #keystats text {
-  font-family: Impact, Charcoal, sans-serif;
+  font-family: Charcoal, sans-serif;
   font-size: 20px;
   fill: #333;
 }
