@@ -87,6 +87,7 @@ h2 {
     padding: 10px 0px;
     border-bottom: 10px #E54C4C solid;
     display: inline-flex;
+    opacity: 0.8;
 }
 
 #leftarrow {
@@ -165,7 +166,7 @@ a {
 
 
 #reloadbutton {
-    font-size: 30px;
+    font-size: 25px;
     right: 20px;
     top: 0px;
     cursor: pointer;
@@ -194,11 +195,11 @@ input[type="text"] {
     color: #333;
 }
 #spinnerdiv {
-  position: absolute;
+  /*position: absolute;
   left: 0;
   top: 0;
   width: 10px;
-  height: 10px;
+  height: 10px;*/
 }
 
 #overviewlink {
