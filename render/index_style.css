@@ -5,7 +5,7 @@ body {
   margin: 0;
   padding: 0;
   padding-top: 70px;
-  font-family: 'Sanchez', 300;
+  font-family: 'Sanchez', serif;
 }
 g {
  font-size: 14px; 
@@ -229,7 +229,7 @@ pre {
   font-size: 14px;
   width: 80%;
   margin: 0;
-  font-family: 'Sanchez', 300;
+  font-family: 'Sanchez', serif;
   //height: 40px;
   //-webkit-box-sizing: border-box;
   //-moz-box-sizing: border-box;
