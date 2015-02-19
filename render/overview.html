@@ -4,7 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>ulogme</title>
+
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Sanchez' rel='stylesheet' type='text/css'>
+
+    <link href='css/font-awesome.css' rel='stylesheet' type='text/css'>
+    
+    <link href='index_style.css' rel='stylesheet' type='text/css'>
     <link href='overview_style.css' rel='stylesheet' type='text/css'>
 
     <link rel="shortcut icon" type="image/x-icon" href="ulogme.ico" />
@@ -92,7 +99,7 @@
           var y = height + margin.top + 3;
           return "translate(" + x + "," + y + ")rotate(90)";})
         .attr("fill", "#333")
-        .attr("font-family", "arial")
+        //.attr("font-family", "arial")
         .attr("font-size", "14px")
         .text(function(d) { var dobj = new Date(d.t0 * 1000); return ppDateShort(dobj); })
 
@@ -277,7 +284,7 @@
       for(var q=0;q<24;q++) {
         svg.append('text')
         .attr('font-size', 14)
-        .attr("font-family", "arial")
+        //.attr("font-family", "arial")
         .attr("transform", "translate(" + (q/24*(W-2*wmargin)+2+wmargin) + ",16)")
         .text(function(d, i) { return ((q + 7) % 24) + ':00'; });
 
@@ -319,9 +326,9 @@
 
         // draw y axis: time
         svg.append('text')
-          .attr("font-size", 14)
+          .attr("font-size", 12)
           .attr("transform", "translate(0,12)")
-          .attr("font-family", "arial")
+          //.attr("font-family", "arial")
           .text(ppDateShort(d0s[k]));
 
         // draw y axis: total number of keys
@@ -334,8 +341,8 @@
 
         svg.append('text')
           .attr('transform', 'translate(' + (W - wmargin + 7) + ', ' + 13 + ')')
-          .attr('font-size', 14)
-          .attr("font-family", "arial")
+          .attr('font-size', 12)
+          //.attr("font-family", "arial")
           .text(ktots[k]);
       }
 
@@ -443,12 +450,13 @@
 
     function startSpinner() {
       // create a spinner object
-      var target = document.getElementById('spinnerdiv');
+      /*var target = document.getElementById('spinnerdiv');
       opts = {left:'30px', top:'40px', radius: 10, color: "#FFF" };
-      var spinner = new Spinner(opts).spin(target);
+                           var spinner = new Spinner(opts).spin(target);*/
+                                   $("#spinnerdiv").addClass("fa-spin");
     }
     function stopSpinner() {
-      $("#spinnerdiv").empty();
+        $("#spinnerdiv").removeClass("fa-spin");
     }
 
     var event_list;
@@ -476,10 +484,18 @@
     </script>
   </head>
   <body onload="start()">
-    <div id="spinnerdiv"></div>
-    <div id="reloadbutton">&#10226</div>
-    <div id="indexlink"><a href="index.html">Single-day View</a></div>
-    <h1>ulogme</h1>
+
+    <div id="header">
+      <span id="title">ulogme</span>
+      <div style="margin: 0 auto;"></div>
+      <div id="rightmatter">
+        <span id="indexlink"><a href="index.html">Single-day View</a></span>
+        <span id="reloadbutton"><i id="spinnerdiv" class="fa fa-refresh"></i></span>
+      </div>
+      
+    </div>
+
+    
     <div id="wrap">
       <div id="graphopts">
       </div>

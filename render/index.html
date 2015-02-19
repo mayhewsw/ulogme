@@ -6,6 +6,8 @@
     <title>ulogme</title>
 
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Sanchez' rel='stylesheet' type='text/css'>    
     <link href='index_style.css' rel='stylesheet' type='text/css'>
 
     <link href='css/font-awesome.css' rel='stylesheet' type='text/css'>
@@ -32,33 +34,38 @@
     var hacking_stats = {};
 
     // renders pie chart showing distribution of time spent into #piechart
-    function createPieChart(es, etypes) {
-
-      // count up the total amount of time spent in all windows
-      var dtall = 0;
-      var counts = {};
-      _.each(es, function(e){ 
+function createPieChart(es, etypes) {
+    
+    // count up the total amount of time spent in all windows
+    var dtall = 0;
+    var counts = {};
+    _.each(es, function(e){ 
         counts[e.m] = (counts[e.m] || 0) + e.dt; 
         dtall += e.dt; 
-      });
-        
-      var stats = _.map(etypes, function(m) {
+    });
+    
+    var stats = _.map(etypes, function(m) {
         return {val: counts[m], 
                 name: m + " (" + (100*counts[m]/dtall).toFixed(1) + "%)", 
-                col: color_hash[m]
+                col: color_hash[m],
+                perc: (100*counts[m]/dtall)
                };
-      });
-
-        console.log(stats);
-        
-      // create a pie chart with d3
-      var chart_data = {};
-      chart_data.width = $(window).width();
-      chart_data.height = 500;
-      chart_data.title = "Total Time: " + strTimeDelta(dtall);
-      chart_data.data = stats;
-      d3utils.drawPieChart(d3.select('#piechart'), chart_data);
-    }
+    });
+    
+    stats = _.filter(stats, function(m) {
+        return m.perc > 1;
+    });
+    
+    console.log(stats);
+    
+    // create a pie chart with d3
+    var chart_data = {};
+    chart_data.width = $(window).width();
+    chart_data.height = 500;
+    chart_data.title = "Total Time: " + strTimeDelta(dtall);
+    chart_data.data = stats;
+    d3utils.drawPieChart(d3.select('#piechart'), chart_data);
+}
 
     // creates the main barcode time visualization for all mapped window titles
     function visualizeEvents(es) {
@@ -408,10 +415,12 @@
           ft = daylog.t1;
         }
 
-        // render blog entry
-        blog = 'blog' in data ? data['blog'] : '';
-        if(blog === '') { blog = 'click to enter blog for this day'; }
-        $("#blogpre").text(blog);
+          console.log(data);
+          
+          // render blog entry
+          blog = 'blog' in data ? data['blog'] : '';
+          $("#blogenter textarea").empty();
+          $("#blogentertxt").val(blog);
 
         visualizeEvents(events);
         writeHeader();
@@ -507,8 +516,6 @@
         } else {
             fetchAndLoadEvents(event_list[cur_event_id]); // display latest
             $("#notesinfo").hide();
-            $("#blogenter").hide();
-            $("#blogpre").show();
         }
       });
       $("#rightarrow").click(function() {
@@ -518,41 +525,43 @@
         } else {
             fetchAndLoadEvents(event_list[cur_event_id]); // display latest
             $("#notesinfo").hide();
-            $("#blogenter").hide();
-            $("#blogpre").show();
 
         }
       });
-
-      // setup blog text click event
-      $("#blogenter").hide();
-      $("#blogpre").click(function(){
-        var txt = $("#blogpre").text();
-        $("#blogpre").hide();
-        $("#blogenter").show();
-        $("#blogentertxt").val(txt)
-        $("#blogentertxt").focus();
-      });
-
-      // setup the submit blog entry button
-      $("#blogentersubmit").click(function(){
-        var txt = $("#blogentertxt").val();
-        $("#blogpre").text(txt);
-        $("#blogpre").show();
-        $("#blogenter").hide();
-
-        // submit to server with POST request
-        $.post("/blog",
-          {"time" : event_list[cur_event_id].t0, "post": txt},
-           function(data,status){
-            console.log("Data: " + data + "\nStatus: " + status);
-            stopSpinner();
-            if(data === 'OK') {
-              // everything went well
+        
+        var submitclicked=false;
+        
+        $("#blogentertxt").bind("focus", function(){
+            $(this).animate({height:200},200);
+            $("#blogentersubmit").show();
+        });
+                                
+        $("#blogentertxt").bind("blur", function(){
+            $(this).animate({height:40},200);
+            if(!submitclicked){
+                $("#blogentersubmit").trigger("mousedown");
             }
-          });
-      });
-      setInterval(redraw, 1000); // in case of window resize, we can redraw
+            $("#blogentersubmit").hide();
+        });
+
+        // setup the submit blog entry button
+        $("#blogentersubmit").mousedown(function(){
+            submitclicked = true;
+            var txt = $("#blogentertxt").val();
+            
+            // submit to server with POST request
+            $.post("/blog",
+                   {"time" : event_list[cur_event_id].t0, "post": txt},
+                   function(data,status){
+                       console.log("Data: " + data + "\nStatus: " + status);
+                       stopSpinner();
+                       if(data === 'OK') {
+                           // everything went well
+                       }
+                   });
+
+        });
+        setInterval(redraw, 1000); // in case of window resize, we can redraw
     }
 
     // redraw if dirty (due to window resize event)
@@ -591,9 +600,8 @@
     </div>
     <div id="wrap">
       <div id="blogwrap">
-        <pre id="blogpre"></pre>
         <div id="blogenter">
-          <textarea id="blogentertxt"></textarea>
+          <textarea id="blogentertxt" placeholder="Click to enter blog for this day"></textarea><br />
           <button id="blogentersubmit">Submit</button>
         </div>
       </div>

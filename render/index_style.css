@@ -1,14 +1,15 @@
 body {
-  font-family: Helvetica, Charcoal, sans-serif;
+  /*font-family: Helvetica, Charcoal, sans-serif;*/
   color: #333;
   font-size: 20px;
   margin: 0;
   padding: 0;
   padding-top: 70px;
+  font-family: 'Sanchez', 300;
 }
 g {
  font-size: 14px; 
- font-family: 'arial';
+
 }
 p {
   margin: 0;
@@ -74,6 +75,7 @@ h2 {
 
 
 #header {
+    font-family: 'Quicksand', sans-serif;
     position: fixed;
     width: 100%;
     left: 0;
@@ -85,7 +87,7 @@ h2 {
     background-color: #F55;
     margin: 0;
     padding: 10px 0px;
-    border-bottom: 10px #E54C4C solid;
+    border-bottom: 6px #E54C4C solid;
     display: inline-flex;
     opacity: 0.8;
 }
@@ -127,7 +129,7 @@ a {
 }
 #notesinfo {
   font-size: 16px;
-  font-family: 'arial';
+  //font-family: 'arial';
   background-color: #FFA;
   border: 1px solid #EE9;
   padding: 10px;
@@ -224,27 +226,42 @@ pre {
   border: 1px solid #CCC;
   padding: 10px;
   border-radius: 3px;
-  font-size: 16px;
-  height: 200px;
-  width: 100%;
+  font-size: 14px;
+  width: 80%;
   margin: 0;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  font-family: 'Sanchez', 300;
+  //height: 40px;
+  //-webkit-box-sizing: border-box;
+  //-moz-box-sizing: border-box;
+  //box-sizing: border-box;
 }
 #blogenter {
-  margin-top: 10px;
+    margin-top: 10px;
+    //display: none;
 }
 #blogentersubmit {
   width: 200px;
   height: 40px;
+  display: none;
 }
 #piechart text {
-  font-family: Charcoal, sans-serif;
+  //font-family: Charcoal, sans-serif;
   font-size: 20px;
 }
 #keystats text {
-  font-family: Charcoal, sans-serif;
-  font-size: 20px;
+  //font-family: Charcoal, sans-serif;
+  font-size: 13px;
   fill: #333;
+}
+
+button {
+    background-color: white;
+    border: 1px solid #BBB;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+textarea:focus {
+    outline: none !important;
+    box-shadow: 0 0 5px #719ECE;
 }
