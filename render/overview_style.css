@@ -1,20 +1,3 @@
-body {
-  font-family: 'Sanchez', 300;
-  color: #333;
-  font-size: 20px;
-  margin: 0;
-  padding: 0;
-  padding-top: 70px;
-}
-h1 {
-  text-align: center;
-  color: #FFF;
-  font-size: 40px;
-  font-weight: normal;
-  background-color: #F55;
-  margin: 0;
-  padding: 20px;
-}
 #content {
   margin: 10px;
 }
@@ -30,20 +13,19 @@ h1 {
 #indexlink a {
   color: #FFF;
 }
-h2 {
-  font-weight: normal;
-}
 
-.line {
+.linethick {
   fill: none;
   stroke: #55F;
   stroke-width: 2px;
 }
-#keystats {
+
+#keystats_ov {
   width: 1200px;
   margin-left: auto;
   margin-right: auto;
 }
+
 .al {
   float: left;
   font-size: 16px;

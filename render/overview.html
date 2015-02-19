@@ -29,7 +29,7 @@
     key_stats_all = [] // global
 
     var skipdraw = {}; // global...
-    function drawEvents() {
+function drawEvents() {
       $("#content").empty();
 
       // draw the legend on top of the svg
@@ -205,9 +205,9 @@
 
     function drawKeyEvents() {
 
-      var W = $("#keystats").width();
+      var W = $("#keystats_ov").width();
       var H = 15;
-      $("#keystats").empty();
+      $("#keystats_ov").empty();
 
       var wmargin = 100;
 
@@ -264,7 +264,7 @@
       // draw global key events across all days as line
       var sx = kevents_global.length;
       var bar_width = (W - wmargin) / sx;
-      var div = d3.select("#keystats").append("div");
+      var div = d3.select("#keystats_ov").append("div");
       var svg = div.append("svg")
         .attr("width", W)
         .attr("height", H*2);
@@ -273,11 +273,11 @@
         .y(function(d) { return 2*H - d / max_kevents_global * H * 2; });
       svg.append("path")
         .datum(kevents_global)
-        .attr("class", "line")
+        .attr("class", "linethick")
         .attr("d", line);
 
       // draw x axis: times of the day
-      var div = d3.select("#keystats").append("div");
+      var div = d3.select("#keystats_ov").append("div");
       var svg = div.append("svg")
         .attr("width", W)
         .attr("height", 20);
@@ -301,7 +301,7 @@
       for(var k=0;k<events.length;k++) {
 
         var kevents = allkevents[k];
-        var div = d3.select("#keystats").append("div").attr("class", "divkeys");
+        var div = d3.select("#keystats_ov").append("div").attr("class", "divkeys");
 
         var svg = div.append("svg")
         .attr("width", W)
@@ -462,8 +462,7 @@
     var event_list;
     var events;
     function start() {
-      
-      loadAllEvents();
+        loadAllEvents();
 
       $("#reloadbutton").click(function() {
 
@@ -507,7 +506,7 @@
         <div id="timesummary"></div>
       </div>
       <h2>Key frequencies during each day</h2>
-      <div id="keystats"></div>
+      <div id="keystats_ov"></div>
     </div>
 
     <br><br><br><br>
