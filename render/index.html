@@ -8,6 +8,8 @@
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
     <link href='index_style.css' rel='stylesheet' type='text/css'>
 
+    <link href='css/font-awesome.css' rel='stylesheet' type='text/css'>
+    
     <link rel="shortcut icon" type="image/x-icon" href="ulogme.ico" />
     
     <script src="jquery-1.8.3.min.js"></script>
@@ -39,6 +41,7 @@
         counts[e.m] = (counts[e.m] || 0) + e.dt; 
         dtall += e.dt; 
       });
+        
       var stats = _.map(etypes, function(m) {
         return {val: counts[m], 
                 name: m + " (" + (100*counts[m]/dtall).toFixed(1) + "%)", 
@@ -46,6 +49,8 @@
                };
       });
 
+        console.log(stats);
+        
       // create a pie chart with d3
       var chart_data = {};
       chart_data.width = $(window).width();
@@ -341,9 +346,22 @@
     }
 
     function writeHeader() {
-      var date0 = new Date(t00*1000);
-      var date1 = new Date(ft*1000);
-      $("#header").html('<h2>' + ppDate(date0) + ' - ' + ppDate(date1) + '</h2>');
+        var date0 = new Date(t00*1000);
+        var date1 = new Date(ft*1000);
+        $("#headertext").html(ppDate(date0) + ' - ' + ppDate(date1));
+        
+        date1 = new Date(event_list[cur_event_id-1].t0*1000);
+        date2 = new Date(event_list[cur_event_id-1].t1*1000);
+        $("#leftarrow").html("<i class='fa fa-angle-double-left'></i>  " + ppDay(date1) + " - " + ppDay(date2));
+
+        if (event_list.length > cur_event_id+1){
+            date1 = new Date(event_list[cur_event_id+1].t0*1000);
+            date2 = new Date(event_list[cur_event_id+1].t1*1000);
+            $("#rightarrow").html(ppDay(date1) + " - " + ppDay(date2) + "  <i class='fa fa-angle-double-right'></i>");
+        }else{
+            $("#rightarrow").html("&nbsp;");
+        }
+        
     }
 
     function startSpinner() {
@@ -485,10 +503,10 @@
         if(cur_event_id < 0) {
           cur_event_id = 0;
         } else {
-          fetchAndLoadEvents(event_list[cur_event_id]); // display latest
-          $("#notesinfo").hide();
-          $("#blogenter").hide();
-          $("#blogpre").show();
+            fetchAndLoadEvents(event_list[cur_event_id]); // display latest
+            $("#notesinfo").hide();
+            $("#blogenter").hide();
+            $("#blogpre").show();
         }
       });
       $("#rightarrow").click(function() {
@@ -496,10 +514,11 @@
         if(cur_event_id >= event_list.length) {
           cur_event_id = event_list.length - 1;
         } else {
-          fetchAndLoadEvents(event_list[cur_event_id]); // display latest
-          $("#notesinfo").hide();
-          $("#blogenter").hide();
-          $("#blogpre").show();
+            fetchAndLoadEvents(event_list[cur_event_id]); // display latest
+            $("#notesinfo").hide();
+            $("#blogenter").hide();
+            $("#blogpre").show();
+
         }
       });
 
@@ -553,14 +572,21 @@
     </script>
   </head>
   <body onload="start()">
-    <div id="spinnerdiv"></div>
-    <div id="reloadbutton">&#10226</div>
-    <div id="overviewlink"><a href="overview.html">Overview</a></div>
-    <h1>ulogme</h1>
-    <div>
-      <div id="leftarrow" class="arrow">&lt</div>
-      <div id="rightarrow" class="arrow">&gt</div>
-      <div id="header"></div>
+
+    <div id="header">
+      <span id="title">ulogme</span>
+      
+      <div id="datebar">
+        <span id="leftarrow" class="arrow"></span>
+        <span id="headertext"></span>
+        <span id="rightarrow" class="arrow">&nbsp;&nbsp;</span>
+      </div>
+      <div id="spinnerdiv"></div>
+      <div id="rightmatter">
+        <span id="overviewlink"><a href="overview.html">Overview</a></span>
+        <span id="reloadbutton">&#10226</span>
+      </div>
+      
     </div>
     <div id="wrap">
       <div id="blogwrap">

@@ -28,6 +28,19 @@ function ppDate(date) {
         date.getHours() + ":" + ("0" + date.getMinutes()).slice(-2);
 }
 
+// pretty print date in a nice format, utility function
+function ppDay(date) {
+  return ['Jan.', 'Feb.', 'Mar.', 
+        'Apr.', 'May.', 'Jun.',
+        'Jul.', 'Aug.', 'Sep.', 
+        'Oct.', 'Nov.', 'Dec.'][date.getMonth()] + " " +
+        (function (d) { 
+            var s = d.toString(), l = s[s.length-1];
+            return s+(['st','nd','rd'][l-1] || 'th');
+        })(date.getDate());
+}
+
+
 function ppDateShort(date) {
   var months = ['Jan', 'Feb', 'Mar', 
         'Apr', 'May', 'Jun',
