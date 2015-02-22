@@ -1,30 +1,31 @@
 {
-  "name": "ulogme",
-  "version": "0.0.0",
-  "homepage": "https://github.com/mayhewsw/ulogme",
-  "authors": [
-    "Stephen Mayhew <swm.mayhew@gmail.com>"
-  ],
-  "description": "A tool for logging time automatically.",
-  "main": "ulogme.sh",
-  "keywords": [
-    "js",
-    "time-tracking"
-  ],
-  "license": "MIT",
-  "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "fontawesome": "~4.3.0",
-    "jquery": "~2.1.3",
-    "vex": "~2.3.2",
-    "underscore": "~1.8.1",
-    "d3": "~3.5.5"
-  }
+    "name": "ulogme",
+    "version": "0.0.0",
+    "homepage": "https://github.com/mayhewsw/ulogme",
+    "authors": [
+        "Andrej Karpathy <andrej.karpathy@gmail.com>",
+        "Stephen Mayhew <swm.mayhew@gmail.com>"
+    ],
+    "description": "A tool for logging time automatically.",
+    "main": "ulogme.sh",
+    "keywords": [
+        "js",
+        "time-tracking"
+    ],
+    "license": "MIT",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "fontawesome": "~4.3.0",
+        "jquery": "~2.1.3",
+        "vex": "~2.3.2",
+        "underscore": "~1.8.1",
+        "d3": "~3.5.5"
+    }
 }
