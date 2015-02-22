@@ -8,19 +8,19 @@
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Sanchez' rel='stylesheet' type='text/css'>    
+
     <link href='index_style.css' rel='stylesheet' type='text/css'>
 
-    <link href='css/font-awesome.css' rel='stylesheet' type='text/css'>
+    <link href='bower_components/fontawesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
     
     <link rel="shortcut icon" type="image/x-icon" href="ulogme.ico" />
     
-    <script src="jquery-1.8.3.min.js"></script>
-    <script src="spin.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="render_utils.js"></script>
     <script src="render_settings.js"></script>
-    <script src="d3.min.js" charset="utf-8"></script>
+    <script src="bower_components/d3/d3.min.js" charset="utf-8"></script>
     <script src="d3utils.js" charset="utf-8"></script>
-    <script src="underscore.min.js" charset="utf-8"></script>
+    <script src="bower_components/underscore/underscore-min.js" charset="utf-8"></script>
     <script src="ulogme_common.js" charset="utf-8"></script>
     
     <script type="application/javascript">
@@ -219,28 +219,43 @@ function createPieChart(es, etypes) {
           .attr("x", function(d){ return d.t/sx; })
           .attr("y", function(d){ return 50-d.a; })
           .attr("height", function(d){ return d.a; })
-          .attr("fill", "#E4CFBA");
+            .attr("fill", "#E4CFBA");
+
       }
 
       // draw notes
       var g = svg.selectAll(".n")
-        .data(dts)
-        .enter().append("g")
-        .attr("class", "n");
+          .data(dts)
+          .enter().append("g")
+          .attr("class", "n")
+          .on("click", function(d) { console.log(d)});
+        
+        g.append("rect")
+            .attr("x", function(d) { return d.x/sx; } )
+            .attr("width", 2)
+            .attr("y", 0)
+            .attr("height", 50)
+            .attr("fill", "#964B00");
+        
+        g.append("text")
+            .attr("transform", function(d,i) { return "translate(" + (d.x/sx+5) + "," + (10+15*(i%5)) + ")"; })
+            .attr("font-family", "'Lato', sans-serif")
+            .attr("font-size", 14)
+            .attr("fill", "#333")
+            .text(function(d) { return d.s; } )
+            .on("click", function(d){
+                //$("#notesinfo").show(); 
+                //$("#notesmsg").html("clicked event <b>" + d.s + "</b><br> Add note at time of this event:");
+                //$("#notetext").focus()
+                //clicktime = d.x+t00;
+                //console.log("Clicked on note: " + d.s);
+                //this.parentNode.remove();
+                return 0; 
+                
+                
 
-      g.append("rect")
-        .attr("x", function(d) { return d.x/sx; } )
-        .attr("width", 2)
-        .attr("y", 0)
-        .attr("height", 50)
-        .attr("fill", "#964B00");
-
-      g.append("text")
-        .attr("transform", function(d,i) { return "translate(" + (d.x/sx+5) + "," + (10+15*(i%5)) + ")"; })
-        .attr("font-family", "'Lato', sans-serif")
-        .attr("font-size", 14)
-        .attr("fill", "#333")
-        .text(function(d) { return d.s; } );
+            });
+        
     }
 
     var clicktime;
@@ -298,14 +313,14 @@ function createPieChart(es, etypes) {
         .on("mouseover", function(d){return tooltip.style("visibility", "visible").text(d.s);})
         .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
-        .on("click", function(d){ 
-          $("#notesinfo").show(); 
-          $("#notesmsg").html("clicked event <b>" + d.s + "</b><br> Add note at time of this event:");
-          $("#notetext").focus()
-          clicktime = d.x+t00;
-          return 0; 
+          .on("click", function(d){ 
+              $("#notesinfo").show(); 
+              $("#notesmsg").html("clicked event <b>" + d.s + "</b><br> Add note at time of this event:");
+              $("#notetext").focus()
+              clicktime = d.x+t00;
+              return 0; 
           });
-
+        
       g.append("rect")
         .attr("x", function(d) { return d.x/sx; } )
         .attr("width", function(d) { return d.w/sx; } )
