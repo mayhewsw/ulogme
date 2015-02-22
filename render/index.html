@@ -387,14 +387,9 @@ function createPieChart(es, etypes) {
     }
 
     function startSpinner() {
-        // create a spinner
-        /*var target = document.getElementById('spinnerdiv');
-        opts = {left:'30px', top:'40px', radius: 10, color: "#FFF" };
-        var spinner = new Spinner(opts).spin(target);*/
         $("#spinnerdiv").addClass("fa-spin");
     }
     function stopSpinner() {
-        //$("#spinnerdiv").empty();
         $("#spinnerdiv").removeClass("fa-spin");
     }
 
