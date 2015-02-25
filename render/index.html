@@ -12,6 +12,8 @@
     <link href='index_style.css' rel='stylesheet' type='text/css'>
 
     <link href='bower_components/fontawesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+    <link href='bower_components/vex/css/vex.css' rel='stylesheet' type='text/css'>
+    <link href='bower_components/vex/css/vex-theme-ulogme.css' rel='stylesheet' type='text/css'>
     
     <link rel="shortcut icon" type="image/x-icon" href="ulogme.ico" />
     
@@ -21,6 +23,7 @@
     <script src="bower_components/d3/d3.min.js" charset="utf-8"></script>
     <script src="d3utils.js" charset="utf-8"></script>
     <script src="bower_components/underscore/underscore-min.js" charset="utf-8"></script>
+    <script src="bower_components/vex/js/vex.combined.min.js" charset="utf-8"></script>
     <script src="ulogme_common.js" charset="utf-8"></script>
     
     <script type="application/javascript">
@@ -32,6 +35,8 @@
     var ecounts = {};
     var etypes = [];
     var hacking_stats = {};
+
+    vex.defaultOptions.className = 'vex-theme-ulogme';
 
     // renders pie chart showing distribution of time spent into #piechart
 function createPieChart(es, etypes) {
@@ -244,16 +249,7 @@ function createPieChart(es, etypes) {
             .attr("fill", "#333")
             .text(function(d) { return d.s; } )
             .on("click", function(d){
-                //$("#notesinfo").show(); 
-                //$("#notesmsg").html("clicked event <b>" + d.s + "</b><br> Add note at time of this event:");
-                //$("#notetext").focus()
-                //clicktime = d.x+t00;
-                //console.log("Clicked on note: " + d.s);
-                //this.parentNode.remove();
                 return 0; 
-                
-                
-
             });
         
     }
@@ -313,11 +309,29 @@ function createPieChart(es, etypes) {
         .on("mouseover", function(d){return tooltip.style("visibility", "visible").text(d.s);})
         .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
-          .on("click", function(d){ 
-              $("#notesinfo").show(); 
-              $("#notesmsg").html("clicked event <b>" + d.s + "</b><br> Add note at time of this event:");
-              $("#notetext").focus()
-              clicktime = d.x+t00;
+          .on("click", function(d){
+              vex.dialog.confirm({
+                  message: "clicked event <b>" + d.s + "</b><br> Add note at time of this event:",
+                  input: "<input name=\"note\" id=\"mynote\" type=\"text\" placeholder=\"Add note here\" />",
+                  callback: function(value) {
+                      startSpinner();
+
+                      if (value && value["note"].length > 0){
+                          clicktime = d.x+t00;
+                          $.post("/addnote",
+                                 {"note": value["note"], "time": clicktime},
+                                 function(data,status){
+                                     console.log("Data: " + data + "\nStatus: " + status);
+                                     if(data === 'OK') {
+                                         // everything went well, refresh current view
+                                         fetchAndLoadEvents(event_list[cur_event_id]);
+                                     }
+                                 });
+                      }
+                      stopSpinner();
+                      return console.log("Note returns");
+                  }
+              });
               return 0; 
           });
         
@@ -474,9 +488,6 @@ function createPieChart(es, etypes) {
         fetchAndLoadEvents(event_list[cur_event_id]); // display latest
       });
 
-      // setup notes hide key
-      $("#notesinfohide").click(function(){ $("#notesinfo").hide(); });
-
       // setup refresh handler to create a post request to /reload
       $("#reloadbutton").click(function() {
 
@@ -493,31 +504,6 @@ function createPieChart(es, etypes) {
         });
       });
 
-      // set up notes add handler
-      $("#notesadd").click(function() {
-
-        startSpinner();
-        $.post("/addnote",
-          {"note": $("#notetext").val(), "time": clicktime},
-          function(data,status){
-            console.log("Data: " + data + "\nStatus: " + status);
-            stopSpinner();
-            if(data === 'OK') {
-              // everything went well, refresh current view
-              $("#notetext").val('') // erase
-              $("#notesinfo").hide(); // take away
-              fetchAndLoadEvents(event_list[cur_event_id]);
-            }
-        });
-      });
-
-      // register enter key in notes as submitting
-      $("#notetext").keyup(function(event){
-        if(event.keyCode == 13){
-          $("#notesadd").click();
-        }
-      });
-
       // setup arrow events
       $("#leftarrow").click(function() {
         cur_event_id--;
@@ -525,7 +511,6 @@ function createPieChart(es, etypes) {
           cur_event_id = 0;
         } else {
             fetchAndLoadEvents(event_list[cur_event_id]); // display latest
-            $("#notesinfo").hide();
         }
       });
       $("#rightarrow").click(function() {
@@ -534,7 +519,6 @@ function createPieChart(es, etypes) {
           cur_event_id = event_list.length - 1;
         } else {
             fetchAndLoadEvents(event_list[cur_event_id]); // display latest
-            $("#notesinfo").hide();
 
         }
       });
@@ -617,14 +601,6 @@ function createPieChart(es, etypes) {
       </div>
       <div id="keystats"></div>
       <div id="keygraph"></div>
-      <div id="notesinfo">
-        <div id="notesinfohide">X</div>
-        <div>
-          <div id="notesmsg"></div>
-          <input type="text" id="notetext">
-          <div id="notesadd">Add</div>
-        </div>
-      </div>
       <div id="notesvis"></div>
       <div id="hackingvis"></div>
       <div id="eventvis"></div>
